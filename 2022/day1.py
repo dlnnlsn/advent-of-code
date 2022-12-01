@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
 current_elf = 0
-max_elf = 0
+top3 = [0, 0, 0]
 
 while True:
     try:
         calories = input()
         if calories == "":
-            max_elf = max(max_elf, current_elf)
+            top3 = list(sorted(top3 + [current_elf]))[1:]
             current_elf = 0
         else:
             current_elf += int(calories)
     except EOFError:
-        max_elf = max(max_elf, current_elf)
+        top3 = list(sorted(top3 + [current_elf]))[1:]
         break
 
-print(max_elf)
+print(sum(top3))
