@@ -25,9 +25,8 @@ while True:
         pile_to = int(words[5]) - 1
         if pile_from == pile_to:
             continue
-        for _ in range(crates_to_move):
-            item = piles[pile_from].pop()
-            piles[pile_to].append(item)
+        piles[pile_to].extend(piles[pile_from][-crates_to_move:])
+        piles[pile_from] = piles[pile_from][:-crates_to_move]
     except EOFError:
         break
 
