@@ -6,8 +6,8 @@ counts = {}
 distinct = 0
 
 for i, c in enumerate(comms):
-    if i >= 4:
-        prev = comms[i - 4]
+    if i >= 14:
+        prev = comms[i - 14]
         if counts[prev] == 1:
             distinct -= 1
         counts[prev] -= 1
@@ -18,6 +18,6 @@ for i, c in enumerate(comms):
     else:
         distinct += 1
         counts[c] = 1
-    if distinct == 4:
+    if distinct == 14:
         print(i + 1)
         break
