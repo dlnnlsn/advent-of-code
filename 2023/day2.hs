@@ -51,6 +51,13 @@ valid game =
         game_blue = maximum $ map blue $ revelations game in
         (game_red <= 12) && (game_green <= 13) && (game_blue <= 14)
 
+power :: Game -> Integer
+power game = 
+    let game_red = maximum $ map red $ revelations game;
+        game_green = maximum $ map green $ revelations game;
+        game_blue = maximum $ map blue $ revelations game in
+        game_red * game_green * game_blue
+
 valid_id_sum :: [Game] -> Integer
 valid_id_sum games = sum $ map game_id $ filter valid games
 
@@ -60,6 +67,8 @@ main = do
     let games_strings = lines content
     let games = map read_game games_strings 
     let id_sum = valid_id_sum games
+    let power_sum = sum $ map power games
     putStrLn $ show id_sum
+    putStrLn $ show power_sum
 
     
