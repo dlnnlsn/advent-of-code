@@ -44,19 +44,20 @@ read_game string =
         let (_ : [id]) = splitOn ' ' tag; revelations = splitOn ';' revelation_string in
             Game (read id) $ map read_revelation revelations
 
+game_red :: Game -> Integer
+game_red = maximum . map red . revelations
+
+game_blue :: Game -> Integer
+game_blue = maximum . map blue . revelations
+
+game_green :: Game -> Integer
+game_green = maximum . map green . revelations
+
 valid :: Game -> Bool
-valid game = 
-    let game_red = maximum $ map red $ revelations game;
-        game_green = maximum $ map green $ revelations game;
-        game_blue = maximum $ map blue $ revelations game in
-        (game_red <= 12) && (game_green <= 13) && (game_blue <= 14)
+valid game = (game_red game <= 12) && (game_green game <= 13) && (game_blue game <= 14)
 
 power :: Game -> Integer
-power game = 
-    let game_red = maximum $ map red $ revelations game;
-        game_green = maximum $ map green $ revelations game;
-        game_blue = maximum $ map blue $ revelations game in
-        game_red * game_green * game_blue
+power game = game_red game * game_green game * game_blue game
 
 valid_id_sum :: [Game] -> Integer
 valid_id_sum games = sum $ map game_id $ filter valid games
