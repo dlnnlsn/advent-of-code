@@ -2,11 +2,19 @@
 
 import math
 
+PART_TWO = True
+
 times = input().split()
-times = list(map(int, times[1:]))
+if PART_TWO:
+    times = [int("".join(times[1:]))]
+else:
+    times = list(map(int, times[1:]))
 
 distances = input().split()
-distances = list(map(int, distances[1:]))
+if PART_TWO:
+    distances = [int("".join(distances[1:]))]
+else:
+    distances = list(map(int, distances[1:]))
 
 number_of_ways = 1
 
