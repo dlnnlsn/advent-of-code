@@ -36,7 +36,7 @@ read_revelation' revelation piece =
             otherwise -> revelation
 
 read_revelation :: String -> Revelation
-read_revelation string = foldl read_revelation' (Revelation 0 0 0) (splitOn ',' string)
+read_revelation = foldl read_revelation' (Revelation 0 0 0) . splitOn ','
 
 read_game :: String -> Game
 read_game string =
@@ -44,23 +44,17 @@ read_game string =
         let (_ : [id]) = splitOn ' ' tag; revelations = splitOn ';' revelation_string in
             Game (read id) $ map read_revelation revelations
 
-game_red :: Game -> Integer
-game_red = maximum . map red . revelations
-
-game_blue :: Game -> Integer
-game_blue = maximum . map blue . revelations
-
-game_green :: Game -> Integer
-game_green = maximum . map green . revelations
+cubes_in :: (Revelation -> Integer) -> Game -> Integer
+cubes_in color = maximum . map color . revelations
 
 valid :: Game -> Bool
-valid game = (game_red game <= 12) && (game_green game <= 13) && (game_blue game <= 14)
+valid game = (red `cubes_in` game <= 12) && (green `cubes_in` game <= 13) && (blue `cubes_in` game <= 14)
 
 power :: Game -> Integer
-power game = game_red game * game_green game * game_blue game
+power game = (red `cubes_in` game) * (green `cubes_in` game) * (blue `cubes_in` game)
 
 valid_id_sum :: [Game] -> Integer
-valid_id_sum games = sum $ map game_id $ filter valid games
+valid_id_sum = sum . map game_id . filter valid
 
 main :: IO ()
 main = do
