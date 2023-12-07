@@ -5,3 +5,8 @@
 
 *.txt
 node_modules/
+*.hi
+*.o
+*.out
+package-lock.json
+package.json
