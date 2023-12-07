@@ -14,7 +14,6 @@ function touches_symbol(x_start: number, x_end: number, y: number, engine: Array
     }
     if (is_symbol(engine[y]?.[x_start - 1])) return true;
     if (is_symbol(engine[y]?.[x_end])) return true;
-    if (is_symbol(engine[y + 1]?.[x_start - 1])) return true;
     for (let x = x_start - 1; x <= x_end; x++) {
         if (is_symbol(engine[y + 1]?.[x])) return true;
     }
