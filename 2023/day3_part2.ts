@@ -13,7 +13,7 @@ function* touching_stars(
     x_end: number,
     y: number,
     engine: Array<string>,
-): Array<Point> {
+): Generator<Point, undefined, undefined> {
     for (let x = x_start - 1; x <= x_end; x++) {
         if (engine[y - 1]?.[x] === "*") {
             yield { x, y: y - 1 };
