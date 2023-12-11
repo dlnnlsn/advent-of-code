@@ -39,66 +39,40 @@ const opposite_direction: Record<Direction, Direction> = {
     W: "E",
 };
 
-type DFSStackObject = {
-    location: Point;
-    from_direction: Direction;
-    steps: number;
-};
-
-function dfs(
+function cycle_length(
     grid: Array<Array<GridSymbol>>,
     start: Point,
     initial_direction: Direction,
 ): number | undefined {
-    // Ordinarily we should keep track of the nodes already visited to
-    // detect if we have entered a loop, but we can only enter a loop
-    // by returning to the starting point, which we already test for
+    let { x, y } = start;
+    let from_direction = initial_direction;
+    let steps = 1;
 
-    const to_visit: Array<DFSStackObject> = [
-        {
-            location: start,
-            from_direction: initial_direction,
-            steps: 1,
-        },
-    ];
-
-    while (to_visit.length > 0) {
-        const {
-            location: { x, y },
-            from_direction: direction,
-            steps,
-        } = to_visit.pop()!;
-
+    while (grid[y][x] !== "S") {
         if (grid[y][x] === undefined) {
-            continue;
+            return undefined;
         }
 
         if (grid[y][x] === ".") {
-            continue;
+            return undefined;
         }
 
-        if (grid[y][x] === "S") {
-            return steps;
+        if (!pipe_directions[grid[y][x]].includes(from_direction)) {
+            return undefined;
         }
 
-        if (!pipe_directions[grid[y][x]].includes(direction)) {
-            continue;
-        }
+        from_direction =
+            pipe_directions[grid[y][x]][0] === from_direction
+                ? pipe_directions[grid[y][x]][1]
+                : pipe_directions[grid[y][x]][0];
 
-        for (const pipe_direction of pipe_directions[grid[y][x]]) {
-            if (pipe_direction == direction) continue;
-            to_visit.push({
-                location: {
-                    x: x + x_offsets[pipe_direction],
-                    y: y + y_offsets[pipe_direction],
-                },
-                from_direction: opposite_direction[pipe_direction],
-                steps: steps + 1,
-            });
-        }
+        x += x_offsets[from_direction];
+        y += y_offsets[from_direction];
+        from_direction = opposite_direction[from_direction];
+        steps++;
     }
 
-    return undefined;
+    return steps;
 }
 
 async function main() {
@@ -116,10 +90,10 @@ async function main() {
         for (let x = 0; x < grid[y].length; x++) {
             if (grid[y][x] !== "S") continue;
 
-            let cycle_length: number | undefined = undefined;
+            let length: number | undefined = undefined;
 
             for (const direction of directions) {
-                cycle_length ||= dfs(
+                length ||= cycle_length(
                     grid,
                     {
                         x: x + x_offsets[direction],
@@ -129,13 +103,13 @@ async function main() {
                 );
             }
 
-            if (cycle_length === undefined) {
+            if (length === undefined) {
                 // Something went wrong because we were promised that the
                 // starting point is part of a unique cycle
                 throw new Error("Starting point not part of any cycle");
             }
 
-            process.stdout.write(`${Math.floor(cycle_length / 2)}\n`);
+            process.stdout.write(`${Math.floor(length / 2)}\n`);
             return;
         }
     }
