@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 
+const int64_t expansion_factor = 1000000;
+
 using namespace std;
 
 int64_t process_coordinates(vector<int>& coords) {
@@ -13,9 +15,9 @@ int64_t process_coordinates(vector<int>& coords) {
             j++;
         }
 
-        total += 2 * (j - i) * i * coords[i]; 
-        total -= 2 * (j - i) * (coords.size() - j) * coords[i];
-        total -= j * (coords.size() - j);
+        total += expansion_factor * (j - i) * i * coords[i]; 
+        total -= expansion_factor * (j - i) * (coords.size() - j) * coords[i];
+        total -= (expansion_factor - 1) * j * (coords.size() - j);
 
         i = j;
     }
