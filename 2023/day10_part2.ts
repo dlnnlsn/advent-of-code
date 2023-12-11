@@ -146,13 +146,13 @@ async function main() {
     }
 
     let area_enclosed: number = 0;
-    let last_corner: Pipe | undefined = undefined;
+    let last_corner: Pipe = "-";
 
     for (let y = 0; y < grid.length; y++) {
-        let inside_loop: boolean = false;
         if (!(y in cycle)) {
-            cycle[y] = [];
+            continue; // This entire row is outside the loop
         }
+        let inside_loop: boolean = false;
         for (let x = 0; x < grid[y].length; x++) {
             if (!cycle[y][x]) {
                 if (inside_loop) {
@@ -175,7 +175,7 @@ async function main() {
                 continue;
             }
 
-            if (grid[y][x] === mirrored[last_corner!]) {
+            if (grid[y][x] === mirrored[last_corner]) {
                 inside_loop = !inside_loop;
             }
         }
