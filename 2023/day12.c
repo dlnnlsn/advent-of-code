@@ -1,24 +1,26 @@
 #include "stdio.h"
 #include "string.h"
 
-#define MAX_RECORD_LENGTH 20
-#define MAX_NUMBER_OF_CLUES 20
+#define BASE_MAX_RECORD_LENGTH 20
+#define BASE_MAX_NUMBER_OF_CLUES 20
 #define NUM_COPIES 5
+#define MAX_RECORD_LENGTH (NUM_COPIES * (BASE_MAX_RECORD_LENGTH + 1) - 1)
+#define MAX_NUMBER_OF_CLUES (NUM_COPIES * BASE_MAX_NUMBER_OF_CLUES)
 
 int main(int argc, char **arg) {
 
-    char record[NUM_COPIES * (MAX_RECORD_LENGTH + 1) + 1];
+    char record[MAX_RECORD_LENGTH + 1];
     int record_length;
 
-    int run_lengths[NUM_COPIES * (MAX_RECORD_LENGTH + 1)];
+    int run_lengths[MAX_RECORD_LENGTH];
 
-    int clues[NUM_COPIES * MAX_NUMBER_OF_CLUES];
+    int clues[MAX_NUMBER_OF_CLUES];
     int num_clues;
 
     long long int
-    assignments[NUM_COPIES * (MAX_RECORD_LENGTH + 1)][NUM_COPIES * MAX_NUMBER_OF_CLUES + 1];
+    assignments[MAX_RECORD_LENGTH + 1][MAX_NUMBER_OF_CLUES + 1];
 
-    int num_definitely_broken[NUM_COPIES * MAX_RECORD_LENGTH];
+    int num_definitely_broken[MAX_RECORD_LENGTH];
 
     long long int total = 0;
 
