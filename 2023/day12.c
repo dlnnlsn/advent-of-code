@@ -30,11 +30,7 @@ int main(int argc, char **arg) {
         num_clues = 0; 
         int clue;
 
-        while (scanf("%d,", &clue) == 1) {
-            clues[num_clues++] = clue;
-        }
-
-        if (scanf("%d", &clue) == 1) {
+        while (scanf("%d%*[,]", &clue) == 1) {
             clues[num_clues++] = clue;
         }
 
