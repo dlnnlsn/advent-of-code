@@ -22,13 +22,13 @@ isVerticalLineOfReflection = all . isLineOfReflection
 isHorizontalLineOfReflection :: Eq a => Int -> [[a]] -> Bool
 isHorizontalLineOfReflection = isLineOfReflection
 
-verticalScore :: Eq a => [[a]] -> Integer
-verticalScore pattern = sum . map fromIntegral $ filter (`isVerticalLineOfReflection` pattern) [1 .. length (head pattern) - 1]
+verticalScore :: Eq a => [[a]] -> Int
+verticalScore pattern = sum $ filter (`isVerticalLineOfReflection` pattern) [1 .. length (head pattern) - 1]
 
-horizontalScore :: Eq a => [[a]] -> Integer
-horizontalScore pattern = sum . map fromIntegral $ filter (`isHorizontalLineOfReflection` pattern) [1 .. length pattern - 1]
+horizontalScore :: Eq a => [[a]] -> Int
+horizontalScore pattern = sum $ filter (`isHorizontalLineOfReflection` pattern) [1 .. length pattern - 1]
 
-score :: Eq a => [[a]] -> Integer
+score :: Eq a => [[a]] -> Int
 score pattern = verticalScore pattern + 100 * horizontalScore pattern
 
 main :: IO ()
