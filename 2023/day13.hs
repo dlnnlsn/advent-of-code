@@ -9,7 +9,7 @@ splitOn delimiter (firstItem : rest) =
 
 isLineOfReflection :: Eq a => Int -> [a] -> Bool
 isLineOfReflection index items =
-    all (uncurry (==)) $ zip segment (reverse segment)
+    and $ zipWith (==) segment (reverse segment)
     where
         segment = if index * 2 >= length items then
             drop (index * 2 - length items) items
