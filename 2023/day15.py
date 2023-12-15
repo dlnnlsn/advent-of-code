@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from typing import List
 from functools import reduce
 from dataclasses import dataclass
 
@@ -18,7 +19,7 @@ if __name__ == "__main__":
     steps = input().split(',')
     print(sum(map(hash, steps)))
 
-    boxes: [[Lense]] = [[] for _ in range(256)]
+    boxes: List[List[Lense]] = [[] for _ in range(256)]
     for step in steps:
         if '=' in step:
             label, focal_length_str = step.split('=')
