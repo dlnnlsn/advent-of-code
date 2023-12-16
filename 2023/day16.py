@@ -66,10 +66,11 @@ y_offsets: Dict[Direction, int] = {
 }
 
 
-def energised_cells(grid: List[str]) -> int:
+def energised_cells(grid: List[str], starting_cell: Cell) -> int:
+    x, y, starting_direction = starting_cell
     cells_to_visit: List[Cell] = [
-        Cell(0, 0, direction) for
-        direction in mirror_directions[grid[0][0]][Direction.right]
+        Cell(x, y, direction) for
+        direction in mirror_directions[grid[y][x]][starting_direction]
     ]
     cells_visited: Set[Cell] = set()
     while len(cells_to_visit):
@@ -79,8 +80,8 @@ def energised_cells(grid: List[str]) -> int:
             continue
         cells_visited.add(current_cell)
 
-        x: int = current_cell.x + x_offsets[current_cell.direction]
-        y: int = current_cell.y + y_offsets[current_cell.direction]
+        x = current_cell.x + x_offsets[current_cell.direction]
+        y = current_cell.y + y_offsets[current_cell.direction]
 
         if y < 0 or y >= len(grid):
             continue
@@ -107,4 +108,22 @@ if __name__ == "__main__":
         except EOFError:
             break
 
-    print(energised_cells(grid))
+    print("Part 1: ", energised_cells(grid, Cell(0, 0, Direction.right)))
+
+    # Not very efficient since a lot of work is duplicated,
+    # but probably good enough:
+    max_energised = -1
+    for x in range(len(grid[0])):
+        max_energised = max(
+            max_energised,
+            energised_cells(grid, Cell(x, 0, Direction.down)),
+            energised_cells(grid, Cell(x, len(grid) - 1, Direction.up))
+        )
+
+    for y in range(len(grid)):
+        max_energised = max(
+            max_energised,
+            energised_cells(grid, Cell(0, y, Direction.right)),
+            energised_cells(grid, Cell(len(grid[0]) - 1, y, Direction.left))
+        )
+    print("Part 2: ", max_energised)
