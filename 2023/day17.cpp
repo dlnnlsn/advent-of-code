@@ -6,6 +6,9 @@
 
 using namespace std;
 
+const int min_steps = 4;
+const int max_steps = 10;
+
 enum Direction {
     LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3
 };
@@ -74,17 +77,24 @@ int main() {
 
         int64_t cost = curr_cell.cost;
         int x = curr_cell.x; int y = curr_cell.y;
-        for (int i = 0; i < 3; i++) {
+
+        bool could_take_min_steps = true;
+        for (int i = 0; i < min_steps; i++) {
             x += x_offset(curr_cell.direction);
             y += y_offset(curr_cell.direction);
 
-            if (x < 0) break;
-            if (x >= width) break;
-            if (y < 0) break;
-            if (y >= height) break;
+            if (x < 0) { could_take_min_steps = false; break; }
+            if (x >= width) { could_take_min_steps = false; break; }
+            if (y < 0) { could_take_min_steps = false; break; }
+            if (y >= height) { could_take_min_steps = false; break; }
 
             cost += grid[y][x] - '0';
+        }
+        if (!could_take_min_steps) {
+            continue;
+        }
 
+        for (int i = min_steps; i <= max_steps; i++) {
             switch (curr_cell.direction) {
                 case UP:
                 case DOWN:
@@ -97,6 +107,16 @@ int main() {
                     to_visit.push(Cell(x, y, DOWN, cost));
                     break;
             }
+
+            x += x_offset(curr_cell.direction);
+            y += y_offset(curr_cell.direction);
+
+            if (x < 0) break;
+            if (x >= width) break;
+            if (y < 0) break;
+            if (y >= height) break;
+
+            cost += grid[y][x] - '0';
         }
     }
 
