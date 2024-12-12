@@ -1,8 +1,28 @@
+#define PART_2
+
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <vector>
+
+#ifdef PART_2
+
+// Returns -1 if target does not end in the same digits as operand
+// Also assumes that operand is not 0 since this never occurs in our input
+int64_t deconcatenate(int64_t target, int64_t operand) {
+    if (target == operand) return -1;
+    while (operand > 0) {
+        if ((target % 10) != (operand % 10)) {
+            return -1;
+        }
+        target /= 10;
+        operand /= 10;
+    }
+    return target;
+}
+
+#endif
 
 int main() {
 
@@ -33,6 +53,15 @@ int main() {
                 if (previous_target >- *it) {
                     new_targets.push_back(previous_target - *it);
                 }
+
+                #ifdef PART_2
+
+                int64_t deconcatenated = deconcatenate(previous_target, *it);
+                if (deconcatenated != -1) {
+                    new_targets.push_back(deconcatenated);
+                }
+
+                #endif
             }
             targets = std::move(new_targets);
         }
